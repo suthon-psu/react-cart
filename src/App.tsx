@@ -65,7 +65,14 @@ function App() {
 
   const onAddProduct = (product: Product) => {
     console.log(`adding product ${product.name}`)
-    setCartItems([...cartItems, {product: product, quantity: 1}])
+    const existingCartItem = cartItems.find(item => item.product.name == product.name)
+    if(existingCartItem){
+      console.log('existing....')
+      existingCartItem.quantity += 1
+      setCartItems([...cartItems.filter(item => item.product.name != product.name), existingCartItem])
+    }else{
+      setCartItems([...cartItems, {product: product, quantity: 1}])
+    }
   }
 
   return (
@@ -84,7 +91,7 @@ function App() {
           </div>
           <div className="cart-section">
             <h2 className="section-title">Shopping Cart</h2>
-            <CartSummary />
+            <CartSummary cartItems={cartItems}/>
             <div className="cart-items">
               {cartItems.map((item, index) => (
                 <CartItemCard key={index} {...item} />

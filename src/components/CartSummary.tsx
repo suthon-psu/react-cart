@@ -1,21 +1,32 @@
-export function CartSummary() {
+import { sumBy } from "lodash"
+import type { CartItem } from "../types"
+
+interface CartSummaryProps {
+    cartItems: CartItem[]
+}
+
+export function CartSummary({cartItems}: CartSummaryProps) {
+    const totalItems = cartItems.length
+    const subtotal = sumBy(cartItems, (item) => item.product.price * item.quantity)
+    const tax = subtotal * 0.07
+
     return (
         <div className="cart-summary">
             <div className="cart-stats">
                 <span>Total Items:</span>
-                <span>3</span>
+                <span>{totalItems}</span>
             </div>
             <div className="cart-stats">
                 <span>Subtotal:</span>
-                <span>$1,547.00</span>
+                <span>${subtotal}</span>
             </div>
             <div className="cart-stats">
                 <span>Tax:</span>
-                <span>$123.76</span>
+                <span>{tax}</span>
             </div>
             <div className="cart-stats">
                 <span><strong>Total:</strong></span>
-                <span className="cart-total">$1,670.76</span>
+                <span className="cart-total">{subtotal + tax}</span>
             </div>
         </div>
     )
