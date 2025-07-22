@@ -5,6 +5,7 @@ import { CartItemCard } from './components/CartItemCard'
 import { CartSummary } from './components/CartSummary'
 import { ProductCard } from './components/ProductCard'
 import type { CartItem, Product } from './types'
+import { useCart } from './CartContext'
 
 function App() {
   const products: Product[] = [
@@ -46,35 +47,8 @@ function App() {
     }
   ]
 
-  // const cartItems = [
-  //   {
-  //     product: products[0],
-  //     quantity: 1
-  //   },
-  //   {
-  //     product: products[1],
-  //     quantity: 1
-  //   },
-  //   {
-  //     product: products[2],
-  //     quantity: 1
-  //   }
-  // ]
-
-  const [cartItems, setCartItems] = useState<CartItem[]>([])
-
-  const onAddProduct = (product: Product) => {
-    console.log(`adding product ${product.name}`)
-    const existingCartItem = cartItems.find(item => item.product.name == product.name)
-    if(existingCartItem){
-      console.log('existing....')
-      existingCartItem.quantity += 1
-      setCartItems([...cartItems.filter(item => item.product.name != product.name), existingCartItem])
-    }else{
-      setCartItems([...cartItems, {product: product, quantity: 1}])
-    }
-  }
-
+  const { cartItems } = useCart()
+  
   return (
     <>
       <div className="app-container">
@@ -85,13 +59,13 @@ function App() {
             <div className="product-grid">
               {/* <ProductCard {...product}/> */}
               {products.map((product, index) => (
-                <ProductCard key={index} product={product} onAddProduct={onAddProduct}/>
+                <ProductCard key={index} product={product}/>
               ))}
             </div>
           </div>
           <div className="cart-section">
             <h2 className="section-title">Shopping Cart</h2>
-            <CartSummary cartItems={cartItems}/>
+            <CartSummary/>
             <div className="cart-items">
               {cartItems.map((item, index) => (
                 <CartItemCard key={index} {...item} />
