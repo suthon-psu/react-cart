@@ -1,9 +1,10 @@
+import { useState } from 'react'
 import './App.css'
 import { CardHeader } from './components/CartHeader'
-import { CartItem } from './components/CartItem'
+import { CartItemCard } from './components/CartItemCard'
 import { CartSummary } from './components/CartSummary'
 import { ProductCard } from './components/ProductCard'
-import type { Product } from './types'
+import type { CartItem, Product } from './types'
 
 function App() {
   const products: Product[] = [
@@ -45,20 +46,27 @@ function App() {
     }
   ]
 
-  const cartItems = [
-    {
-      product: products[0],
-      quantity: 1
-    },
-    {
-      product: products[1],
-      quantity: 1
-    },
-    {
-      product: products[2],
-      quantity: 1
-    }
-  ]
+  // const cartItems = [
+  //   {
+  //     product: products[0],
+  //     quantity: 1
+  //   },
+  //   {
+  //     product: products[1],
+  //     quantity: 1
+  //   },
+  //   {
+  //     product: products[2],
+  //     quantity: 1
+  //   }
+  // ]
+
+  const [cartItems, setCartItems] = useState<CartItem[]>([])
+
+  const onAddProduct = (product: Product) => {
+    console.log(`adding product ${product.name}`)
+    setCartItems([...cartItems, {product: product, quantity: 1}])
+  }
 
   return (
     <>
@@ -70,7 +78,7 @@ function App() {
             <div className="product-grid">
               {/* <ProductCard {...product}/> */}
               {products.map((product, index) => (
-                <ProductCard key={index} {...product} />
+                <ProductCard key={index} product={product} onAddProduct={onAddProduct}/>
               ))}
             </div>
           </div>
@@ -79,7 +87,7 @@ function App() {
             <CartSummary />
             <div className="cart-items">
               {cartItems.map((item, index) => (
-                <CartItem key={index} {...item} />
+                <CartItemCard key={index} {...item} />
               ))}
             </div>
             <div className="mt-16">

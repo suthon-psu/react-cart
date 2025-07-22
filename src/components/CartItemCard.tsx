@@ -1,6 +1,6 @@
 import type { CartItem } from "../types";
 
-export function CartItem({ product, quantity }: CartItem) {
+export function CartItemCard({ product, quantity }: CartItem) {
     return (
 
         <div className="cart-item">
